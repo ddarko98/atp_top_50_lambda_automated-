@@ -1,19 +1,18 @@
-🎾 **ATP Top 50 Lambda Function**
+🎾**ATP Top 50 Lambda Function**
 
 This AWS Lambda function processes ATP tennis match data from Kaggle, generates a Top 50 ATP Players Report, and uploads the results to Amazon S3. Notifications are sent via Amazon SNS upon success or failure.
 
-🚀 Workflow
+🚀 **Workflow**
 
-Dataset Download
+1. Dataset Download
 
 Uses a custom AWS Lambda Layer with kagglehub
 .
 
 Downloads dataset:
 dissfya/atp-tennis-2000-2023daily-pull
-.
 
-Data Processing (Pandas)
+2. Data Processing (Pandas)
 
 Cleans and parses match data.
 
@@ -29,7 +28,7 @@ ATP 500
 
 Other
 
-Statistics Aggregation
+3. Statistics Aggregation
 Calculates for each player:
 
 Total wins
@@ -44,7 +43,7 @@ First recorded win
 
 Last recorded win
 
-Report Generation
+4. Report Generation
 
 Creates a CSV with the Top 50 players by total wins.
 
@@ -58,7 +57,7 @@ Example (sample only):
 s3://my-bucket/final/atp-top-50-2025-08-17.csv
 
 
-Notifications
+5. Notifications
 
 Publishes a success or error message to an SNS Topic:
 
@@ -134,30 +133,31 @@ On failure → Publishes full error message and traceback to the SNS topic.
 
 ⚡ How to Deploy
 
-Prepare the Lambda Layer
+1. Prepare the Lambda Layer
 
 Package kagglehub (and its dependencies) into a .zip.
 
 Upload as a custom Lambda Layer.
 
-Deploy the Lambda Function
+2. Deploy the Lambda Function
 
 Upload lambda_function.py to AWS Lambda.
 
 Attach the execution role with the IAM policy above.
 
-Configure Environment Variables
+3. Configure Environment Variables
 
-Set KAGGLEHUB_CACHE=/tmp/kagglehub.
+Set:
 
-Connect to EventBridge
+KAGGLEHUB_CACHE=/tmp/kagglehub
+
+
+4. Connect to EventBridge
 
 Create a rule with the cron expression 0 4 ? * 2 *.
 
-Test
+5. Test
 
 Run manually once.
 
-Verify the CSV is uploaded to S3 and notification is sent.
-
-👉 This version is safe for GitHub since ARNs, account IDs, and bucket names are masked.
+Verify the CSV is uploaded to S3 and a notification is sent.
